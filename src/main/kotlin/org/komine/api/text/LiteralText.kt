@@ -21,11 +21,12 @@ package org.komine.api.text
 import org.komine.api.text.format.TextFormat
 
 class LiteralText(
+	val content: String = "",
 	format: TextFormat = TextFormat.NONE,
-	children: List<Text> = emptyList(),
-	val content: String = "") : Text(format, children) {
+	children: List<Text> = emptyList()) : Text(format, children) {
 	companion object {
 		val EMPTY = LiteralText()
+		val NEW_LINE = LiteralText("\n")
 	}
 
 	override fun rebuild() = LiteralTextBuilder()

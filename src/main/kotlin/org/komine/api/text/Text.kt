@@ -65,4 +65,10 @@ abstract class Text(
 	override fun compareTo(other: Text): Int = hashCode() - other.hashCode()
 
 	override fun toText() = this
+
+	companion object {
+		fun of() = LiteralText.EMPTY
+		fun of(content: String = "", format: TextFormat = TextFormat.NONE, children: List<Text> = emptyList()) =
+			LiteralTextBuilder(content, format, children).build()
+	}
 }

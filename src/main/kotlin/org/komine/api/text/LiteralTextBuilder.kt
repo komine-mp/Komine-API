@@ -18,11 +18,18 @@
 
 package org.komine.api.text
 
-class LiteralTextBuilder(text: Text, var content: String = "") : TextBuilder(text) {
+import org.komine.api.text.format.TextFormat
+
+class LiteralTextBuilder(var content: String = "", format: TextFormat, children: List<Text> = emptyList()) : TextBuilder(format, children) {
+	constructor(text: Text, content: String = "") : this(content, text.format, text.children)
 	constructor(text: LiteralText = LiteralText.EMPTY) : this(text, text.content)
 
 	override fun isEmpty() = super.isEmpty() && content.isEmpty()
 
-	override fun build() =
-		if (isEmpty()) LiteralText.EMPTY else LiteralText(format, backingChildren, content)
+	override fun build() = when {
+		isEmpty() -> LiteralText.EMPTY
+		format.isEmpty() && children.isEmpty() && content == LiteralText.NEW_LINE.content ->
+			LiteralText.NEW_LINE
+		else -> LiteralText(content, format, backingChildren)
+	}
 }
